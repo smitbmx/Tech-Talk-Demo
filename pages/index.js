@@ -1,23 +1,32 @@
-import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
+import React, { Component } from "react";
 
-export default function Home() {
-  return (
-    <div className="container">
-      <Head>
-        <title>Next.js Starter!</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+export const getStaticProps = async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/users');
+  const data = await res.json();
 
-      <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-      </main>
-
-      <Footer />
-    </div>
-  )
+  return {
+    props: { workers: data }
+  }
 }
+
+const Workers = ({ workers }) => {
+  console.log(workers)
+
+  return (
+    <div>
+      <h2>All Workers</h2>
+      {workers.map(worker => (
+        <div key={worker.id}>
+          <a>
+            <h4>Name: { worker.name }</h4>
+            <h4>Name: { worker.email }</h4>
+            <h4>Name: { worker.address.city }</h4>
+          </a>
+          <br />
+        </div>
+      ))}
+    </div>
+  );
+}
+ 
+export default Workers;
